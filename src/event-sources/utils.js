@@ -90,6 +90,9 @@ function getEventSourceNameBasedOnEvent ({
   if (event.requestContext) {
     return event.version === '2.0' ? 'AWS_API_GATEWAY_V2' : 'AWS_API_GATEWAY_V1'
   }
+  if (event.raw_path) {
+    return 'AMAZON_VPC_LATTICE'
+  }
   if (event.traceContext) {
     const functionsExtensionVersion = process.env.FUNCTIONS_EXTENSION_VERSION
 

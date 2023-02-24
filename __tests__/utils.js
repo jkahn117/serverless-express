@@ -216,6 +216,25 @@ const kinesisDataStreamEvent = {
   ]
 }
 
+// Sample event derived from VPC Lattice public preview
+const vpcLatticeEvent = {
+  body: 'Hello Lambda!',
+  headers: {
+    accept: 'application/json',
+    'accept-encoding': 'gzip, deflate',
+    'content-length': '0',
+    'user-agent': 'HTTPie/3.2.1',
+    'x-foo': 'bar,baz',
+    'x-forwarded-for': '10.0.80.237'
+  },
+  is_base64_encoded: false,
+  method: 'GET',
+  query_string_parameters: {
+    foo: 'bar'
+  },
+  raw_path: '/foo/bar/baz?foo=bar&foo=baz'
+}
+
 describe('getEventSourceNameBasedOnEvent', () => {
   test('throws error on empty event', () => {
     expect(() => getEventSourceNameBasedOnEvent({ event: {} })).toThrow(
@@ -257,6 +276,11 @@ describe('getEventSourceNameBasedOnEvent', () => {
     const result = getEventSourceNameBasedOnEvent({ event: eventbridgeScheduledEvent })
     expect(result).toEqual('AWS_EVENTBRIDGE')
   })
+
+  test('recognizes vpc lattice event', () => {
+    const result = getEventSourceNameBasedOnEvent({ event: vpcLatticeEvent })
+    expect(result).toEqual('AMAZON_VPC_LATTICE')
+  })
 })
 
 module.exports = {
@@ -266,5 +290,6 @@ module.exports = {
   sqsEvent,
   eventbridgeEvent,
   eventbridgeScheduledEvent,
-  kinesisDataStreamEvent
+  kinesisDataStreamEvent,
+  vpcLatticeEvent
 }
