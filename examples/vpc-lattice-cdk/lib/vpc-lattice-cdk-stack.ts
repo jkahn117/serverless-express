@@ -24,13 +24,11 @@ export class VpcLatticeCdkStack extends cdk.Stack {
       handler: "handler",
       runtime: Runtime.NODEJS_18_X,
       vpc: vpc
-      //depsLockFilePath: join(__dirname, "functions/api/package-lock.json")
     })
 
     new LogRetention(this, "UploadFunctionLogsRetention", {
       logGroupName: expressFunction.logGroup.logGroupName,
       retention: RetentionDays.ONE_WEEK
     });
-
   }
 }
